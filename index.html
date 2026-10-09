@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="دفتر آلمانی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>دفتر آلمانی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F0E6;--card:#FBFAF5;--ink:#2A2924;--mute:#8A8676;--line:#E4E0D2;--acc:#5E6B3F;--onacc:#fff;--bad:#B5483A;--ok:#4C7A45;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--sh:0 1px 2px rgba(40,35,20,.07)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1B1A16;--card:#25241F;--ink:#EDEADF;--mute:#9A9686;--line:#36342C;--acc:#A3B37A;--onacc:#1B1A16}}
+:root[data-theme="dark"]{--bg:#1B1A16;--card:#25241F;--ink:#EDEADF;--mute:#9A9686;--line:#36342C;--acc:#A3B37A;--onacc:#1B1A16}
+html{height:100%}
+:root[data-theme="white"]{--bg:#fff;--card:#F6F6F3;--line:#E9E9E4;--acc:#4F5D33}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/1.8 Vazirmatn,system-ui,Tahoma,sans-serif;overflow:hidden}
+#app{height:100%;display:flex;flex-direction:column}
+#pager{flex:1;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+#pager::-webkit-scrollbar{display:none}
+.pg{flex:none;width:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow-y:auto;padding:18px 16px 24px}
+.t{font-size:30px;font-weight:800;margin:0 0 10px}.h{font-size:15px;font-weight:700;margin:16px 0 6px;color:var(--mute)}
+.card{background:var(--card);border-radius:16px;padding:12px 14px;margin:0 0 10px;box-shadow:var(--sh)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.de{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.mute{color:var(--mute);font-size:14px}
+button{font:inherit;cursor:pointer;border:0;color:var(--ink)}
+.b{background:var(--acc);color:var(--onacc);border-radius:14px;padding:8px 18px;font-weight:600;box-shadow:var(--sh)}
+.g{background:var(--card);border-radius:12px;padding:5px 12px;box-shadow:var(--sh)}
+.b:active,.g:active{transform:scale(.97)}
+input,textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:3px 0;outline:none}
+input:focus,textarea:focus{border-color:var(--acc)}textarea{min-height:80px}
+.seg{display:flex;background:var(--line);border-radius:12px;padding:3px;margin-bottom:10px;direction:ltr}
+.seg button{flex:1;background:transparent;border-radius:10px;padding:3px 0;font-weight:700}.seg .on{background:var(--card);box-shadow:var(--sh)}
+#ad{margin:0 12px 6px;padding:5px 12px;background:var(--card);border-radius:12px;font-size:13px;display:flex;justify-content:space-between;gap:8px;box-shadow:var(--sh)}#ad:empty{display:none}#ad a{color:var(--acc);font-weight:700}
+#tb{display:flex;background:var(--card);border-top:1px solid var(--line)}
+#tb button{flex:1;background:none;padding:6px 0 4px;font-size:11px;color:var(--mute);line-height:1.4}#tb b{display:block;font-size:20px;font-weight:400}#tb .on{color:var(--acc);font-weight:700}
+.sheet{position:fixed;inset:0;background:var(--bg);z-index:9;overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px calc(env(safe-area-inset-bottom,0px) + 24px);display:none}.sheet.on{display:block}
+.opt{display:block;width:100%;text-align:right;background:var(--card);border-radius:12px;padding:8px 12px;margin:5px 0;box-shadow:var(--sh)}.opt.ok{outline:2px solid var(--ok)}.opt.no{outline:2px solid var(--bad)}
+#call{text-align:center;display:none;flex-direction:column;align-items:center;justify-content:center;background:#23261B;color:#EDEADF}#call.on{display:flex}
+#av{width:120px;height:120px;border-radius:50%;background:#5E6B3F;font-size:52px;line-height:120px;margin:10px}#av.talk{box-shadow:0 0 0 12px rgba(163,179,122,.25)}
+#cv{background:#fff;color:#111;border-radius:6px;padding:22px;direction:ltr;text-align:left;font-size:13px;line-height:1.5;font-family:system-ui,sans-serif}
+#cv h2{margin:0;font-size:22px}#cv .r{display:grid;grid-template-columns:110px 1fr;gap:6px;margin:5px 0}#cv h3{margin:12px 0 2px;font-size:13px;border-bottom:1px solid #999}#cv p{margin:0;white-space:pre-wrap}
+@media print{#tb,#ad,.noprint,.sheet{display:none!important}body{overflow:visible;background:#fff}#app,#pager{display:block}.pg{width:auto;overflow:visible;padding:0}.pg:not(#p3){display:none}}
+</style></head><body>
+<div id="app"><div id="pager"><section class="pg" id="p0"></section><section class="pg" id="p1"></section><section class="pg" id="p2"></section><section class="pg" id="p3"></section><section class="pg" id="p4"></section><section class="pg" id="p5"></section></div><div id="ad"></div><nav id="tb"></nav></div>
+<div class="sheet" id="sh"></div><div class="sheet" id="call"></div>
+<script>
+/* ===== تبلیغات: فقط همین لیست (t=عنوان، d=متن، u=لینک) ===== */
+const ADS=[{t:'جای تبلیغ شما',d:'برای درج آگهی پیام بدهید',u:'mailto:you@example.com'}];
+/* ============================================================ */
+const ld=(k,d)=>{try{const x=localStorage.getItem('dh_'+k);return x?JSON.parse(x):d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem('dh_'+k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let SM=null;try{window.claude&&claude.use('sample').then(s=>SM=s).catch(()=>{})}catch(e){}
+const TABS=[['📚','درس‌ها'],['🎧','تمرین'],['📞','فرزاد'],['💼','کار و رزومه'],['🗒️','بیشتر'],['👤','حساب']];
+const LV=['A1','A2','B1','B2','C1','C2'];
+const TOP={A1:['Begrüßung','Sich vorstellen','Zahlen','Familie','Essen und Trinken','Tagesablauf','Einkaufen','Wegbeschreibung'],A2:['Im Restaurant','Beim Arzt','Wohnung','Reisen','Das Perfekt','Wetter','Hobbys','Telefonieren'],B1:['Bewerbung','Arbeitsalltag','Nebensätze','Meinung äußern','Medien','Umwelt','Konjunktiv II','Behörden'],B2:['Passiv','Wirtschaft','Politik','Gesundheit','Bildung','Technik','Argumentieren','Präsentation'],C1:['Fachsprache','Nominalisierung','Literatur','Gesellschaft','Wissenschaft','Rhetorik','Verhandlung','Redewendungen'],C2:['Stilistik','Ironie und Humor','Philosophie','Recht','Kunstkritik','Dialekte','Essay schreiben','Feinheiten des Verstehens']};
+const D=[['Arbeit','کار'],['Wohnung','آپارتمان'],['Bahnhof','ایستگاه'],['Brot','نان'],['Wasser','آب'],['Haus','خانه'],['Freund','دوست'],['Zeit','زمان'],['Geld','پول'],['Schule','مدرسه'],['Buch','کتاب'],['Stadt','شهر'],['Arzt','پزشک'],['Auto','ماشین'],['lernen','یاد گرفتن'],['sprechen','صحبت کردن'],['arbeiten','کار کردن'],['bewerben','درخواست دادن']];
+const S=['Ich heiße Ali.','Wie spät ist es?','Ich möchte einen Kaffee, bitte.','Wo ist der Bahnhof?','Ich suche eine Arbeit.'];
+const JOBS=[['Bundesagentur für Arbeit','https://www.arbeitsagentur.de/jobsuche/'],['Make it in Germany','https://www.make-it-in-germany.com/de/jobs/'],['StepStone','https://www.stepstone.de'],['Indeed Deutschland','https://de.indeed.com'],['XING Jobs','https://www.xing.com/jobs'],['LinkedIn Jobs','https://www.linkedin.com/jobs/']];
+const BOOKS=[['Projekt Gutenberg-DE','https://www.projekt-gutenberg.org'],['Project Gutenberg (German)','https://www.gutenberg.org/browse/languages/de'],['Wikisource Deutsch','https://de.wikisource.org'],['Nicos Weg — DW','https://learngerman.dw.com'],['Goethe-Institut Übungen','https://www.goethe.de/de/spr/ueb.html']];
+const st={lv:'A1',done:ld('done',{}),notes:ld('notes',[]),jobs:ld('jobs',[]),si:0,cv:ld('cv',{exp:[],edu:[]})};
+/* ===== ورود و ثبت‌نام: برای حساب واقعی روی همه گوشی‌ها، آدرس و کلید پروژه رایگان Supabase را اینجا بگذارید ===== */
+const CFG={SUPA_URL:'',SUPA_KEY:''};
+st.user=ld('user',null);st.theme=ld('theme','light');
+function setTheme(t){st.theme=t;sv('theme',t);document.documentElement.dataset.theme=t}setTheme(st.theme);
+async function hs(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function auth(reg){const m=$('#am5'),e=$('#ae').value.trim().toLowerCase(),pw=$('#ap').value,n=$('#an')?$('#an').value.trim():'';
+ if(!/^\S+@\S+\.\S+$/.test(e)){m.textContent='ایمیل معتبر وارد کنید.';return}if(pw.length<6){m.textContent='رمز عبور حداقل ۶ حرف باشد.';return}
+ try{if(CFG.SUPA_URL){const r=await fetch(CFG.SUPA_URL+'/auth/v1/'+(reg?'signup':'token?grant_type=password'),{method:'POST',headers:{apikey:CFG.SUPA_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:e,password:pw,data:{name:n}})});const j=await r.json();
+   if(!r.ok){m.textContent=reg?'ثبت‌نام انجام نشد (شاید ایمیل قبلاً ثبت شده).':'ایمیل یا رمز اشتباه است.';return}
+   if(!j.access_token){m.textContent='ایمیل تأیید برایتان ارسال شد. بعد از تأیید وارد شوید.';return}
+   st.user={email:e,name:(j.user&&j.user.user_metadata&&j.user.user_metadata.name)||n||e.split('@')[0]}}
+  else{const a=ld('acc',{}),k=await hs(pw+e);
+   if(reg){if(a[e]){m.textContent='این ایمیل قبلاً ثبت شده.';return}a[e]={n:n||e.split('@')[0],h:k};sv('acc',a);st.user={email:e,name:a[e].n}}
+   else{if(!a[e]||a[e].h!==k){m.textContent='ایمیل یا رمز اشتباه است.';return}st.user={email:e,name:a[e].n}}}
+  sv('user',st.user);p5()}catch(x){m.textContent='خطا در اتصال. اینترنت را بررسی کنید.'}}
+function p5(){const u=st.user,T=[['light','خاکی'],['white','سفید'],['dark','تیره']];
+ $('#p5').innerHTML=`<h1 class="t">حساب</h1>`+(u?`<div class="card" style="text-align:center"><div id="av" style="margin:6px auto;width:80px;height:80px;line-height:80px;font-size:34px;background:var(--acc);color:var(--onacc)">${esc((u.name||'?')[0].toUpperCase())}</div><b>${esc(u.name)}</b><div class="mute de">${esc(u.email)}</div><p class="mute">${Object.keys(st.done).length} درس تمام شده</p><button class="g" id="lo">خروج از حساب</button></div>`
+ :`<div class="card"><input id="an" placeholder="نام (برای ثبت‌نام)" dir="auto"><input id="ae" type="email" placeholder="ایمیل" dir="ltr"><input id="ap" type="password" placeholder="رمز عبور (حداقل ۶ حرف)" dir="ltr"><div style="display:flex;gap:8px;margin-top:8px"><button class="b" id="li" style="flex:1">ورود</button><button class="g" id="rg" style="flex:1">ساخت حساب</button></div><p class="mute" id="am5"></p>${CFG.SUPA_URL?'':'<p class="mute">حالت آزمایشی: حساب فقط روی همین گوشی ذخیره می‌شود.</p>'}</div>`)
+ +`<div class="h">تم رنگی</div><div class="seg">${T.map(t=>`<button data-th="${t[0]}" class="${st.theme===t[0]?'on':''}">${t[1]}</button>`).join('')}</div>`;
+ $$('#p5 [data-th]').forEach(b=>b.onclick=()=>{setTheme(b.dataset.th);p5()});
+ if(u)$('#lo').onclick=()=>{st.user=null;sv('user',null);p5()};else{$('#li').onclick=()=>auth(0);$('#rg').onclick=()=>auth(1)}}
+const nl=s=>esc(s).replace(/\n/g,'<br>');
+function say(t,r,end){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=r||.92;const v=speechSynthesis.getVoices().filter(v=>v.lang.startsWith('de'));u.voice=v.find(x=>/Markus|Martin|Daniel|Male/i.test(x.name))||v[0]||null;if(end)u.onend=end;speechSynthesis.speak(u)}catch(e){end&&end()}}
+const norm=s=>s.toLowerCase().replace(/[^a-zäöüß\s]/g,'').split(/\s+/).filter(Boolean);
+function rec(cb,err){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){err('no');return null}const r=new R();r.lang='de-DE';r.onresult=e=>cb(e.results[0][0].transcript);r.onerror=e=>err(e.error);r.onend=()=>cb(null);r.start();return r}
+async function ask(p){if(!SM)throw 0;return SM.json(p,{modelTier:'quick',cache:false})}
+
+/* ---------- pages ---------- */
+function p0(){const c=Object.keys(st.done).length;$('#p0').innerHTML=`<h1 class="t">درس‌ها</h1><div class="mute">${c} از ${LV.length*8} درس تمام شده</div><div class="seg" style="margin-top:8px">${LV.map(l=>`<button data-lv="${l}" class="${l===st.lv?'on':''}">${l}</button>`).join('')}</div><div class="card">${TOP[st.lv].map((t,i)=>`<div class="row" data-open="${i}" style="cursor:pointer"><span><span class="de">${t}</span></span><span class="mute">${st.done[st.lv+i]?'✓':'›'}</span></div>`).join('')}</div><p class="mute">هر درس با هوش مصنوعی ساخته و روی گوشی ذخیره می‌شود.</p>`}
+async function openLesson(i){const id=st.lv+i,sh=$('#sh');sh.className='sheet on';sh.innerHTML=`<button class="g" data-close>‹ بازگشت</button><h1 class="t de" style="display:block;margin-top:10px">${st.lv} · ${TOP[st.lv][i]}</h1><p class="mute" id="lw">در حال ساخت درس…</p>`;
+ let L=ld('ls_'+id,null);if(!L){try{L=await ask(`Erstelle eine Deutschlektion, Niveau ${st.lv}, Thema "${TOP[st.lv][i]}", für persischsprachige Lernende. Antworte NUR als JSON: {"intro":"2 Sätze auf Persisch","words":[{"de":"","fa":""}] (8 Einträge),"dialog":[{"de":"","fa":""}] (6 Zeilen),"grammar":"kurze Erklärung auf Persisch mit 2 deutschen Beispielen","quiz":[{"q":"deutsche Frage","opts":["","",""],"a":0}] (3 Fragen)}`);sv('ls_'+id,L)}catch(e){$('#lw').textContent='ساخت درس ممکن نشد. اینترنت و دسترسی هوش مصنوعی را بررسی کنید.';return}}
+ const sp=t=>`<button class="g" data-say="${esc(t)}">🔊</button>`;
+ sh.innerHTML=`<button class="g" data-close>‹ بازگشت</button><h1 class="t de" style="display:block;margin-top:10px">${st.lv} · ${TOP[st.lv][i]}</h1><p>${esc(L.intro)}</p><div class="h">واژه‌ها</div><div class="card">${(L.words||[]).map(w=>`<div class="row"><span><span class="de">${esc(w.de)}</span> — ${esc(w.fa)}</span>${sp(w.de)}</div>`).join('')}</div><div class="h">گفتگو</div><div class="card">${(L.dialog||[]).map(w=>`<div class="row"><span><span class="de">${esc(w.de)}</span><br><span class="mute">${esc(w.fa)}</span></span>${sp(w.de)}</div>`).join('')}</div><div class="h">گرامر</div><div class="card">${nl(L.grammar)}</div><div class="h">آزمون کوتاه</div>${(L.quiz||[]).map((q,qi)=>`<div class="card"><div class="de">${esc(q.q)}</div>${q.opts.map((o,oi)=>`<button class="opt de" data-qa="${q.a}" data-oi="${oi}" style="direction:ltr">${esc(o)}</button>`).join('')}</div>`).join('')}<button class="b" data-fin="${id}" style="width:100%;margin-top:8px">${st.done[id]?'✓ تمام شده':'درس را تمام کردم'}</button>`}
+function p1(){const s=S[st.si%S.length];$('#p1').innerHTML=`<h1 class="t">تمرین</h1><div class="card"><b>Sprechen</b><p class="de" style="font-size:20px;display:block;direction:ltr">${esc(s)}</p><button class="g" data-say="${esc(s)}">🔊 بشنو</button> <button class="b" id="rec">🎤 بگو</button> <button class="g" data-next>بعدی</button><p id="rs" class="mute"></p></div><div class="card"><b>Hören</b><p class="mute">بشنو و بنویس.</p><button class="g" id="hp">🔊 پخش</button><input id="hi" dir="ltr" placeholder="Schreiben Sie…"><button class="b" id="hc">بررسی</button><p id="hr"></p></div><div class="h">لغت‌نامه</div><input id="q" placeholder="جستجو آلمانی یا فارسی"><div class="card" id="dl"></div>`;dl();
+ $('#q').oninput=dl;$('#hp').onclick=()=>say(s);$('#hc').onclick=()=>{const ok=norm($('#hi').value).join(' ')===norm(s).join(' ');$('#hr').innerHTML=ok?'<span style="color:var(--ok)">درست!</span>':`<span style="color:var(--bad)">نادرست.</span> <span class="de">${esc(s)}</span>`};
+ $('#rec').onclick=()=>{$('#rs').textContent='در حال گوش دادن…';rec(t=>{if(!t)return;const a=norm(s),b=norm(t),p=Math.round(100*a.filter(w=>b.includes(w)).length/a.length);$('#rs').innerHTML=`<span class="de">${esc(t)}</span> — ${p}٪`},e=>$('#rs').textContent='میکروفون یا تشخیص صدا در دسترس نیست.')}}
+function dl(){const q=($('#q').value||'').trim().toLowerCase();$('#dl').innerHTML=D.filter(d=>!q||d[0].toLowerCase().includes(q)||d[1].includes(q)).map(d=>`<div class="row"><span><span class="de">${d[0]}</span> — ${d[1]}</span><button class="g" data-say="${d[0]}">🔊</button></div>`).join('')||'<span class="mute">پیدا نشد</span>'}
+function p2(){$('#p2').innerHTML=`<h1 class="t">فرزاد</h1><div class="card" style="text-align:center"><div id="av" style="margin:6px auto;background:var(--acc);color:var(--onacc)">ف</div><b>Farzad</b><div class="mute">دوست ایرانی‌آلمانی در برلین</div><div class="seg" style="margin-top:12px">${['A1','A2','B1','B2'].map(l=>`<button data-cl="${l}" class="${l===(st.cl||'A1')?'on':''}">${l}</button>`).join('')}</div><button class="b" data-call style="width:100%;font-size:18px">📞 تماس بگیر</button></div><p class="mute">فرزاد فقط آلمانی صحبت می‌کند. وقتی ساکت شوید جواب می‌دهد و اشتباه‌هایتان را در پایین صفحه به فارسی یادآوری می‌کند. اولین بار مرورگر اجازه میکروفون و هوش مصنوعی را می‌پرسد.</p>`}
+let C=null;
+function startCall(){if(!SM){alert('اتصال هوش مصنوعی در دسترس نیست. صفحه را داخل claude.ai باز کنید.');return}
+ C={on:1,h:[],lv:st.cl||'A1',t0:Date.now(),r:null};const el=$('#call');el.className='sheet on';el.innerHTML=`<div class="mute" id="cs" style="color:#aaa">در حال برقراری تماس…</div><div id="av">ف</div><h2 style="margin:0">Farzad</h2><div id="ct" class="mute" style="color:#aaa">00:00</div><p id="cl" class="de" style="max-width:320px;min-height:60px;direction:ltr"></p><p id="cp" style="color:#C9D6A1;max-width:320px;min-height:30px;font-size:14px"></p><button class="b" data-hang style="background:#B5483A;color:#fff;font-size:18px;padding:12px 30px;margin-top:10px">قطع تماس</button>`;
+ C.iv=setInterval(()=>{const s=Math.floor((Date.now()-C.t0)/1000);$('#ct').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},1000);turn('')}
+async function turn(u){if(!C||!C.on)return;const cs=$('#cs');cs.textContent='…';if(u)C.h.push('Anrufer: '+u);
+ try{const r=await ask(`Du bist Farzad, 28, ein freundlicher Iraner in Berlin, am Telefon mit einem Deutschlerner (Niveau ${C.lv}). Sprich NUR Deutsch auf diesem Niveau, 1-2 kurze Sätze, stelle am Ende eine einfache Frage. Natürlich wie ein echter Anruf. Bisheriges Gespräch:\n${C.h.join('\n')||'(Anruf beginnt: begrüße kurz)'}\nAntworte NUR als JSON: {"de":"deine Antwort","tip":"nur falls der Anrufer einen Fehler machte: kurzer Hinweis auf Persisch, sonst leer"}`);
+  if(!C||!C.on)return;C.h.push('Farzad: '+r.de);$('#cl').textContent=r.de;$('#cp').textContent=r.tip||'';cs.textContent='Farzad spricht';$('#av').classList.add('talk');say(r.de,.92,()=>{$('#av').classList.remove('talk');listen()})}
+ catch(e){cs.textContent='خطا در اتصال. دوباره صحبت کنید.';setTimeout(listen,1500)}}
+function listen(){if(!C||!C.on)return;$('#cs').textContent='Farzad hört zu…';let got=0;C.r=rec(t=>{if(t){got=1;turn(t)}else if(!got&&C&&C.on)setTimeout(listen,400)},e=>{if(e==='not-allowed'||e==='no'){$('#cs').textContent='دسترسی میکروفون ممکن نیست.';C.on=0}})}
+function hang(){if(C){C.on=0;clearInterval(C.iv);try{C.r&&C.r.abort();speechSynthesis.cancel()}catch(e){}C=null}$('#call').className='sheet'}
+
+function p3(){const c=st.cv,f=[['name','نام و نام خانوادگی'],['title','عنوان شغلی'],['email','ایمیل'],['phone','تلفن'],['city','شهر']];
+ $('#p3').innerHTML=`<div class="noprint"><h1 class="t">کار و رزومه</h1><div class="card">${JOBS.map(j=>`<div class="row"><a href="${j[1]}" target="_blank" rel="noopener" style="color:var(--acc)">${j[0]}</a><span class="mute">›</span></div>`).join('')}</div>
+<input id="jc" placeholder="پیگیری درخواست: شرکت / موقعیت"><button class="b" id="ja">افزودن</button>${st.jobs.map((j,i)=>`<div class="row"><span>${esc(j)}</span><button class="g" data-dj="${i}">حذف</button></div>`).join('')}
+<div class="h">رزومه</div>${f.map(([k,n])=>`<input data-k="${k}" placeholder="${n}" dir="auto" value="${esc(c[k])}">`).join('')}<textarea data-k="sum" placeholder="درباره من" dir="auto">${esc(c.sum)}</textarea>
+<div class="h">سوابق کاری</div>${c.exp.map((x,i)=>`<div class="card">${[['c','شرکت'],['r','سمت'],['f','از (سال)'],['t','تا (سال)']].map(([k,n])=>`<input data-l="exp" data-i="${i}" data-k="${k}" placeholder="${n}" dir="auto" value="${esc(x[k])}">`).join('')}<textarea data-l="exp" data-i="${i}" data-k="d" placeholder="شرح وظایف" dir="auto">${esc(x.d)}</textarea><button class="g" data-rm="exp${i}">حذف</button></div>`).join('')}<button class="g" data-add="exp">+ سابقه کاری</button>
+<div class="h">تحصیلات</div>${c.edu.map((x,i)=>`<div class="card">${[['s','دانشگاه / مدرسه'],['g','مدرک و رشته'],['f','از (سال)'],['t','تا (سال)']].map(([k,n])=>`<input data-l="edu" data-i="${i}" data-k="${k}" placeholder="${n}" dir="auto" value="${esc(x[k])}">`).join('')}<button class="g" data-rm="edu${i}">حذف</button></div>`).join('')}<button class="g" data-add="edu">+ تحصیلات</button>
+<textarea data-k="skl" placeholder="مهارت‌ها و زبان‌ها" dir="auto" style="margin-top:10px">${esc(c.skl)}</textarea>
+<button class="b" id="ai" style="width:100%;margin:8px 0">✨ با هوش مصنوعی به آلمانیِ استاندارد تبدیل کن</button><button class="g" id="pdf" style="width:100%">خروجی PDF</button><p class="mute" id="am"></p></div><div id="cv"></div>`;cvDraw();
+ $$('#p3 [data-k]').forEach(i=>i.oninput=()=>{const l=i.dataset.l;(l?st.cv[l][+i.dataset.i]:st.cv)[i.dataset.k]=i.value;sv('cv',st.cv);cvDraw()});
+ $('#ja').onclick=()=>{const v=$('#jc').value.trim();if(v){st.jobs.unshift(v);sv('jobs',st.jobs);p3()}};$('#pdf').onclick=()=>window.print();
+ $('#ai').onclick=async()=>{const m=$('#am');m.textContent='در حال تبدیل…';try{const r=await SM.json(`Du bist Karriereberater in Deutschland. Wandle diesen Lebenslauf in einen professionellen deutschen tabellarischen Lebenslauf (DIN-5008-Stil, neueste Station zuerst, knappe Stichpunkte mit Verben) um. Erfinde nichts. Gleiches JSON-Schema zurück, nur JSON: {"name","title","email","phone","city","sum","skl","exp":[{"c","r","f","t","d"}],"edu":[{"s","g","f","t"}]}\n${JSON.stringify(st.cv)}`,{modelTier:'default',cache:false});r.exp=r.exp||[];r.edu=r.edu||[];st.cv=r;sv('cv',r);p3();$('#am').textContent='انجام شد. می‌توانید ویرایش کنید.'}catch(e){m.textContent='اتصال هوش مصنوعی ممکن نشد.'}}}
+function cvDraw(){const c=st.cv,e=$('#cv');if(!e)return;const rows=(a,f)=>a.map(x=>`<div class="r"><div>${esc(x.f)}${x.t?' – '+esc(x.t):''}</div><div>${f(x)}</div></div>`).join('');
+ e.innerHTML=`<h2>${esc(c.name)||'Vor- und Nachname'}</h2><div>${esc(c.title)}</div><div>${[c.email,c.phone,c.city].filter(Boolean).map(esc).join(' | ')}</div>${c.sum?`<h3>Profil</h3><p>${esc(c.sum)}</p>`:''}${c.exp.length?`<h3>Berufserfahrung</h3>`+rows(c.exp,x=>`<b>${esc(x.r)}</b>, ${esc(x.c)}<p>${esc(x.d)}</p>`):''}${c.edu.length?`<h3>Ausbildung</h3>`+rows(c.edu,x=>`<b>${esc(x.g)}</b>, ${esc(x.s)}`):''}${c.skl?`<h3>Kenntnisse</h3><p>${esc(c.skl)}</p>`:''}`}
+function p4(){$('#p4').innerHTML=`<h1 class="t">بیشتر</h1><div class="h">یادداشت‌ها</div><textarea id="nt" placeholder="یادداشت جدید…"></textarea><button class="b" id="na">افزودن</button>${st.notes.map((n,i)=>`<div class="card" style="margin-top:8px">${nl(n)}<div><button class="g" data-dn="${i}">حذف</button></div></div>`).join('')}<div class="h">کتابخانه (منابع قانونی و رایگان)</div><div class="card">${BOOKS.map(j=>`<div class="row"><a href="${j[1]}" target="_blank" rel="noopener" style="color:var(--acc)">${j[0]}</a><span class="mute">›</span></div>`).join('')}</div>`;
+ $('#na').onclick=()=>{const t=$('#nt').value.trim();if(t){st.notes.unshift(t);sv('notes',st.notes);p4()}}}
+
+/* ---------- shell ---------- */
+function tabs(i){$('#tb').innerHTML=TABS.map((t,k)=>`<button data-tab="${k}" class="${k===i?'on':''}"><b>${t[0]}</b>${t[1]}</button>`).join('')}
+const pg=$$('.pg');const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)tabs(pg.indexOf(e.target))}),{root:$('#pager'),threshold:.6});pg.forEach(p=>io.observe(p));
+let ai=0;function ad(){const a=ADS[ai++%ADS.length];$('#ad').innerHTML=a?`<span>تبلیغ · ${esc(a.t)} — ${esc(a.d)}</span><a href="${esc(a.u)}" target="_blank" rel="noopener">باز کردن</a>`:''}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-tab],[data-lv],[data-open],[data-say],[data-close],[data-fin],[data-oi],[data-next],[data-dn],[data-dj],[data-add],[data-rm],[data-call],[data-hang],[data-cl]');if(!t)return;const d=t.dataset;
+ if(d.tab!==undefined)pg[+d.tab].scrollIntoView({behavior:'smooth',inline:'start',block:'nearest'});
+ else if(d.lv){st.lv=d.lv;p0()}else if(d.open!==undefined)openLesson(+d.open);else if(d.say)say(d.say);
+ else if('close' in d){$('#sh').className='sheet';p0()}
+ else if(d.fin){st.done[d.fin]=1;sv('done',st.done);$('#sh').className='sheet';p0()}
+ else if(d.oi!==undefined){const ok=+d.oi===+d.qa;t.classList.add(ok?'ok':'no')}
+ else if('next' in d){st.si++;p1()}
+ else if(d.dn!==undefined){st.notes.splice(+d.dn,1);sv('notes',st.notes);p4()}
+ else if(d.dj!==undefined){st.jobs.splice(+d.dj,1);sv('jobs',st.jobs);p3()}
+ else if(d.add){st.cv[d.add].push({});sv('cv',st.cv);p3()}
+ else if(d.rm){const k=d.rm.slice(0,3),i=+d.rm.slice(3);st.cv[k].splice(i,1);sv('cv',st.cv);p3()}
+ else if(d.cl){st.cl=d.cl;p2()}else if('call' in d)startCall();else if('hang' in d)hang()});
+st.cv.exp=st.cv.exp||[];st.cv.edu=st.cv.edu||[];p0();p1();p2();p3();p4();p5();tabs(0);ad();setInterval(ad,7000);
+</script></body></html>
